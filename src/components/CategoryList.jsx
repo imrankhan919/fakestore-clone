@@ -1,12 +1,23 @@
 import { useContext } from "react"
 import ProductContext from "../context/ProductContext"
+import {fetchCategoryProducts} from '../context/productActions'
 
 function CategoryList({category}) {
  
-   const {fetchCategoryProducts} = useContext(ProductContext)
+   const {dispatch} = useContext(ProductContext)
  
+ async  function handleClick(category){
+
+    const categories = await fetchCategoryProducts(category)
+    dispatch({
+      type : "GET_CATEGORY_PRODUCTS",
+      payload : categories
+  })
+   }
+
+
   return (
-    <li className="category-list-item" > <button onClick={() => fetchCategoryProducts(category)}>{category}</button> </li>
+    <li className="category-list-item" > <button onClick={() => handleClick(category)}>{category}</button> </li>
   )
 }
 

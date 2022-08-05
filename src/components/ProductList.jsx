@@ -1,16 +1,27 @@
 import React, { useContext, useEffect } from 'react'
 import ProductContext from '../context/ProductContext'
 import ProductCard from './ProductCard'
+import {fetchProducts} from "../context/productActions"
 
 function ProductList() {
   
-  const {products , fetchProducts} = useContext(ProductContext)
+  const {products , dispatch} = useContext(ProductContext)
   
-  useEffect(()=>{
-    fetchProducts()
+ useEffect(()=>{
+    
+    const fetchData = async () =>{
+      const products = await fetchProducts()
+      dispatch({
+        type : "GET_PRODUCTS",
+        payload : products
+    })
+    }
+    
+
+    fetchData()
+
   },[])
-
-
+  
   return (
     <div className="product-list">
        

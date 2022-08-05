@@ -1,14 +1,25 @@
 import React, { useContext, useEffect } from 'react'
 import ProductContext from '../context/ProductContext'
 import CategoryList from './CategoryList'
+import {fetchCategories} from '../context/productActions'
 
 function CategoryBar() {
   
-  const {categories,  fetchCategories} = useContext(ProductContext)
+  const {categories , dispatch} = useContext(ProductContext)
   
 
   useEffect(()=>{
-    fetchCategories()
+    
+    const fetchData = async ()=> {
+      const categories  = await fetchCategories()
+      dispatch({
+      type : "GET_CATEGORIES",
+      payload : categories
+  })
+    }
+
+    fetchData()
+
   },[])
 
 

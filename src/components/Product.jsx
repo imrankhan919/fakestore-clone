@@ -1,17 +1,35 @@
 import { useContext, useEffect } from 'react'
 import {useParams} from 'react-router-dom'
 import ProductContext from '../context/ProductContext'
+import {addToCart , fetchProduct} from '../context/productActions'
 
 
 function Product() {
   
    const params =  useParams()
 
-   const {fetchProduct , product , addToCart} =  useContext(ProductContext)
+   const {product , dispatch} =  useContext(ProductContext)
 
    useEffect(()=>{
-    fetchProduct(params.id)
+    const fetchData = async()=>{
+      const product = await fetchProduct(params.id)
+      dispatch({
+      type : 'GET_PRODUCT',
+      payload : product
+    })
+    }
+
+    fetchData()
+
    },[])
+
+
+   function handleClick(product){
+    dispatch({
+      type : "ADD_TO_CART",
+      payload : product
+  })
+   }
 
   
     return (
@@ -22,7 +40,7 @@ function Product() {
         <div className="product-description">
             <h1>{product.title}</h1>
             <p>{product.description}</p>
-          <button onClick={()=>addToCart(product)}>Add to cart</button>
+          <button onClick={()=> handleClick(product)}>Add to cart</button>
             
         </div>
 
